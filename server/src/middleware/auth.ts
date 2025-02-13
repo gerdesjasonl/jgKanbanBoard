@@ -14,10 +14,12 @@ if (!authHeader || !authHeader.startsWith('Bearer ')) {
 const token = authHeader.split(' ')[1];
 
 try {
-  const decoded =jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+  const secret = process.env.JWT_SECRET || ''; 
+  const decoded =jwt.verify(token, secret) as JwtPayload;
   req.user = decoded;
   next();
 } catch (error) {
   return res.status(403).json({ message: 'Token Invalid' });
 }
+return;
 };
